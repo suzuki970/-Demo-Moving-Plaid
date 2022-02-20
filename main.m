@@ -39,7 +39,6 @@ cfg.LINECOLOR = [[120,120,120];[50,0,50]];    % circle color [background,line]
 cycleWidth = round(pixel_size(cfg.DOT_PITCH, 1/cfg.SP_FREQ, cfg.VISUAL_DISTANCE));
 cfg.SIZE_STIM = cycleWidth * cfg.NUM_LINE;
 
-
 cfg.LINECOLOR(3,:) = round(cfg.LINECOLOR(2,:) * 0.5 + cfg.LINECOLOR(1,:)*0.5);
 
 % cfg.LINEANGLE = [340,20];   % toward above
@@ -140,22 +139,28 @@ for iMove = 1:cycleWidth
     % Left
     tmp_alpha = alpha;
     
-    tmp_alpha(square(:,:,1,cycleWidth+1-iMove)==cfg.LINECOLOR(1,1) & ...
+    if cfg.ctrl
+           tmp_alpha(square(:,:,1,cycleWidth+1-iMove)==cfg.LINECOLOR(1,1) & ...
         square(:,:,2,cycleWidth+1-iMove)==cfg.LINECOLOR(1,2) & ...
         square(:,:,3,cycleWidth+1-iMove)==cfg.LINECOLOR(1,3))=0;
     
-    %     tmp_alpha(square(:,:,1,cycleWidth+1-iMove)==cfg.LINECOLOR(2,1) &...
-    %         square(:,:,2,cycleWidth+1-iMove)==cfg.LINECOLOR(2,2) &...
-    %         square(:,:,3,cycleWidth+1-iMove)==cfg.LINECOLOR(2,3))=round(255*0.5); %128+128*0.5
-    tmp_alpha(square(:,:,1,cycleWidth+1-iMove)==cfg.LINECOLOR(2,1) &...
+        tmp_alpha(square(:,:,1,cycleWidth+1-iMove)==cfg.LINECOLOR(2,1) &...
         square(:,:,2,cycleWidth+1-iMove)==cfg.LINECOLOR(2,2) &...
-        square(:,:,3,cycleWidth+1-iMove)==cfg.LINECOLOR(2,3))=255; %128+128*0.5
+        square(:,:,3,cycleWidth+1-iMove)==cfg.LINECOLOR(2,3))=0; %128+128*0.5
+     else
+         tmp_alpha(square(:,:,1,cycleWidth+1-iMove)==cfg.LINECOLOR(1,1) & ...
+        square(:,:,2,cycleWidth+1-iMove)==cfg.LINECOLOR(1,2) & ...
+        square(:,:,3,cycleWidth+1-iMove)==cfg.LINECOLOR(1,3))=0;
     
+        tmp_alpha(square(:,:,1,cycleWidth+1-iMove)==cfg.LINECOLOR(2,1) &...
+            square(:,:,2,cycleWidth+1-iMove)==cfg.LINECOLOR(2,2) &...
+            square(:,:,3,cycleWidth+1-iMove)==cfg.LINECOLOR(2,3))=round(255*0.5); %128+128*0.5
+      end
     square_ctrl(:,:,4,cycleWidth+1-iMove) = tmp_alpha;
     square(:,:,4,cycleWidth+1-iMove) = tmp_alpha;
     
-    texture_left = Screen('MakeTexture',win,square_ctrl(:,:,:,cycleWidth+1-iMove));
-%     texture_left = Screen('MakeTexture',win,square(:,:,:,cycleWidth+1-iMove));
+%     texture_left = Screen('MakeTexture',win,square_ctrl(:,:,:,cycleWidth+1-iMove));
+    texture_left = Screen('MakeTexture',win,square(:,:,:,cycleWidth+1-iMove));
     
     % Draw texture
     [window_s(iMove),screenRect] = Screen('OpenOffscreenWindow',screenNumber,cfg.BGCOLOR,[],[],32);
