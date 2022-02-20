@@ -13,28 +13,28 @@ else
     demoMode = true;
 end
 
-prompt = 'Name?';
-cfg.participantsInfo.name = input(prompt,'s');
-while 1
-    if isempty(cfg.participantsInfo.name)
-        prompt = 'Name is null. try again -- > ';
-        cfg.participantsInfo.name = input(prompt,'s');
-    else
-        break;
-    end
-end
-
-prompt = 'No.?';
-cfg.participantsInfo.no = input(prompt);
-while 1
-    if isempty(cfg.participantsInfo.no)
-        prompt = 'No. is null. try again -- > ';
-        cfg.participantsInfo.no = input(prompt,'s');
-    else
-        break;
-    end
-end
-today_date = datestr(now, 30);
+% prompt = 'Name?';
+% cfg.participantsInfo.name = input(prompt,'s');
+% while 1
+%     if isempty(cfg.participantsInfo.name)
+%         prompt = 'Name is null. try again -- > ';
+%         cfg.participantsInfo.name = input(prompt,'s');
+%     else
+%         break;
+%     end
+% end
+% 
+% prompt = 'No.?';
+% cfg.participantsInfo.no = input(prompt);
+% while 1
+%     if isempty(cfg.participantsInfo.no)
+%         prompt = 'No. is null. try again -- > ';
+%         cfg.participantsInfo.no = input(prompt,'s');
+%     else
+%         break;
+%     end
+% end
+today_sdate = datestr(now, 30);
 
 % hide a cursor point
 HideCursor;
