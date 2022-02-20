@@ -4,13 +4,16 @@ rng('shuffle');
 % OpenGL
 AssertOpenGL;
 
-%%participant's info
-prompt = 'Demo? 1:demo -- > ';
+%% participant's info
+prompt = '[0]:Bistable\n[1]:Control\n----> ';
+
 demoMode = input(prompt);
-if demoMode~=1
-    demoMode = false;
+if demoMode==0
+    demoMode = true;
+    cfg.ctrl = false;
 else
     demoMode = true;
+    cfg.ctrl = true;
 end
 
 % prompt = 'Name?';

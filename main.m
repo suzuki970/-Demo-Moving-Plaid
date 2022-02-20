@@ -35,7 +35,8 @@ cfg.SESSION = 1;
 
 cfg.BGCOLOR = 128;
 cfg.DOT_PITCH = 0.271;      % Flexscan S2133 (21.3 inch, 1600 x 1200 pixels size)
-cfg.LINECOLOR = [[120,120,120];[50,0,50]];    % circle color [background,line]
+cfg.LINECOLOR = [[85,66,63];[229,144,178]];    % circle color [background,line]
+% cfg.LINECOLOR = [[120,120,120];[50,0,50]];
 cycleWidth = round(pixel_size(cfg.DOT_PITCH, 1/cfg.SP_FREQ, cfg.VISUAL_DISTANCE));
 cfg.SIZE_STIM = cycleWidth * cfg.NUM_LINE;
 
@@ -112,7 +113,7 @@ for x = 1:cfg.SIZE_STIM
         % inside
         if p <= (cfg.SIZE_STIM/2)^2
             alpha(x,y) = 255;
-            % ouside
+        % ouside
         else
             square(x,y,:,:) = 0;
             square_ctrl(x,y,:,:) = 0;
@@ -131,7 +132,7 @@ for iMove = 1:cycleWidth
     
     tmp_alpha(square(:,:,1,iMove)==cfg.LINECOLOR(2,1) &...
         square(:,:,2,iMove)==cfg.LINECOLOR(2,2) &...
-        square(:,:,3,iMove)==cfg.LINECOLOR(2,3))=round(255*0.5); %128+128*0.5
+        square(:,:,3,iMove)==cfg.LINECOLOR(2,3))=round(255*0.5);
     
     square(:,:,4,iMove) = tmp_alpha;
     texture_right = Screen('MakeTexture',win,square(:,:,:,iMove));
@@ -140,35 +141,36 @@ for iMove = 1:cycleWidth
     tmp_alpha = alpha;
     
     if cfg.ctrl
-           tmp_alpha(square(:,:,1,cycleWidth+1-iMove)==cfg.LINECOLOR(1,1) & ...
-        square(:,:,2,cycleWidth+1-iMove)==cfg.LINECOLOR(1,2) & ...
-        square(:,:,3,cycleWidth+1-iMove)==cfg.LINECOLOR(1,3))=0;
-    
-        tmp_alpha(square(:,:,1,cycleWidth+1-iMove)==cfg.LINECOLOR(2,1) &...
-        square(:,:,2,cycleWidth+1-iMove)==cfg.LINECOLOR(2,2) &...
-        square(:,:,3,cycleWidth+1-iMove)==cfg.LINECOLOR(2,3))=0; %128+128*0.5
-     else
-         tmp_alpha(square(:,:,1,cycleWidth+1-iMove)==cfg.LINECOLOR(1,1) & ...
-        square(:,:,2,cycleWidth+1-iMove)==cfg.LINECOLOR(1,2) & ...
-        square(:,:,3,cycleWidth+1-iMove)==cfg.LINECOLOR(1,3))=0;
-    
+        tmp_alpha(square(:,:,1,cycleWidth+1-iMove)==cfg.LINECOLOR(1,1) & ...
+            square(:,:,2,cycleWidth+1-iMove)==cfg.LINECOLOR(1,2) & ...
+            square(:,:,3,cycleWidth+1-iMove)==cfg.LINECOLOR(1,3))=0;
+        
         tmp_alpha(square(:,:,1,cycleWidth+1-iMove)==cfg.LINECOLOR(2,1) &...
             square(:,:,2,cycleWidth+1-iMove)==cfg.LINECOLOR(2,2) &...
-            square(:,:,3,cycleWidth+1-iMove)==cfg.LINECOLOR(2,3))=round(255*0.5); %128+128*0.5
-      end
-    square_ctrl(:,:,4,cycleWidth+1-iMove) = tmp_alpha;
+            square(:,:,3,cycleWidth+1-iMove)==cfg.LINECOLOR(2,3))=0;
+    else
+        tmp_alpha(square(:,:,1,cycleWidth+1-iMove)==cfg.LINECOLOR(1,1) & ...
+            square(:,:,2,cycleWidth+1-iMove)==cfg.LINECOLOR(1,2) & ...
+            square(:,:,3,cycleWidth+1-iMove)==cfg.LINECOLOR(1,3))=0;
+        
+        tmp_alpha(square(:,:,1,cycleWidth+1-iMove)==cfg.LINECOLOR(2,1) &...
+            square(:,:,2,cycleWidth+1-iMove)==cfg.LINECOLOR(2,2) &...
+            square(:,:,3,cycleWidth+1-iMove)==cfg.LINECOLOR(2,3))=round(255*0.5);
+    end
+    
+%     square_ctrl(:,:,4,cycleWidth+1-iMove) = tmp_alpha;
     square(:,:,4,cycleWidth+1-iMove) = tmp_alpha;
     
-%     texture_left = Screen('MakeTexture',win,square_ctrl(:,:,:,cycleWidth+1-iMove));
+    %     texture_left = Screen('MakeTexture',win,square_ctrl(:,:,:,cycleWidth+1-iMove));
     texture_left = Screen('MakeTexture',win,square(:,:,:,cycleWidth+1-iMove));
     
     % Draw texture
     [window_s(iMove),screenRect] = Screen('OpenOffscreenWindow',screenNumber,cfg.BGCOLOR,[],[],32);
     Screen('CopyWindow',window_s(iMove), win);
     
-%     Screen('FillOval', win, ones(1,3)*cfg.LINECOLOR(1),...
-%         [centerX - cfg.SIZE_STIM, centerY - cfg.SIZE_STIM,...
-%         centerX + cfg.SIZE_STIM, centerY + cfg.SIZE_STIM]);
+    Screen('FillOval', win, cfg.LINECOLOR(1,:),...
+        [centerX - cfg.SIZE_STIM, centerY - cfg.SIZE_STIM,...
+        centerX + cfg.SIZE_STIM, centerY + cfg.SIZE_STIM]);
     
     Screen('DrawTexture', win, texture_right,[],...
         [(centerX-cfg.SIZE_STIM), (centerY-cfg.SIZE_STIM),...
@@ -184,10 +186,9 @@ for iMove = 1:cycleWidth
         [(centerX-cfg.SIZE_STIM)-3, (centerY-cfg.SIZE_STIM)-3,...
         (centerX+cfg.SIZE_STIM)+3, (centerY+cfg.SIZE_STIM)+3],5)
     
-    if cfg.ctrl
-        Screen('CopyWindow',win, window_s(iMove));
-        imageArray=Screen('GetImage',window_s(iMove));
-    end
+    
+%     Screen('CopyWindow',win, window_s(iMove));
+%     imageArray=Screen('GetImage',window_s(iMove));
     
     Screen('DrawLines', win, FixationXY,1, FixColor);
     Screen('CopyWindow',win, window_s(iMove));
@@ -200,7 +201,7 @@ if useEyelink
 end
 
 %% show messages before start
-showMessage(cfg,'Ready...',[],screenNumber,win);
+% showMessage(cfg,'Ready...',[],screenNumber,win);
 
 %% main
 for i_trial = 1:All_trial

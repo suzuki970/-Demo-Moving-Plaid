@@ -9,7 +9,7 @@ SCREEN_HEIGHT = 1080;
 
 tic
 file = ['stim.avi'];
-rootFolder = '/Users/yuta/Desktop/Github/-Demo-Moving-Plaid/stim/';
+rootFolder = './stim/';
 
 fileList = dir([rootFolder 'test*']);
 fileList = fileList(~ismember({fileList.name}, {'.', '..','.DS_Store'}));
